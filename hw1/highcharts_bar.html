@@ -1,0 +1,38 @@
+
+<html>
+    <head>
+        <title>It Works!</title>
+    </head>
+    <body>
+        <h1>It Works!</h1>
+
+        <!-- Let's see the chart here-->
+        <div id="chartPlaceHolder"></div>
+
+        <!-- External imports begin -->
+        <script src = "https://code.highcharts.com/highcharts.js"></script>
+        <script src = "https://code.highcharts.com/modules/data.js"></script>
+        <!-- External imports end -->
+
+        <!-- Internal imports begin -->
+        <!-- <script src="simple_highcharts.js"></script> -->
+        <!-- Internal imports end -->
+
+    </body>
+    <script>
+        Highcharts.chart("chartPlaceHolder", {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'bar'
+            },
+            title: {
+                text: 'Number of students over last 14 years'
+            },
+            data:{
+                csvURL:"http://127.0.0.1:5500/ucsd_cds_admission_data_2005_to_2018.csv"
+            }
+        });
+    </script>
+</html>

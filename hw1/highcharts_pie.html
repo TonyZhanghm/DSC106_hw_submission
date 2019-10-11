@@ -1,0 +1,60 @@
+
+<html>
+    <head>
+        <title>It Works!</title>
+    </head>
+    <body>
+        <h1>It Works!</h1>
+
+        <!-- Let's see the chart here-->
+        <div id="chartPlaceHolder"></div>
+
+        <!-- External imports begin -->
+        <script src = "https://code.highcharts.com/highcharts.js"></script>
+        <script src = "https://code.highcharts.com/modules/data.js"></script>
+        <!-- External imports end -->
+
+        <!-- Internal imports begin -->
+        <!-- <script src="simple_highcharts.js"></script> -->
+        <!-- Internal imports end -->
+
+    </body>
+    <script>
+        Highcharts.chart("chartPlaceHolder", {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Numbers of students applied in 2018'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: 'numbers of students applied in 2018',
+                colorByPoint: true,
+                data: [{
+                    name: 'men',
+                    y: 45636,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: 'women',
+                    y: 52265}]
+            }]
+        });
+    </script>
+</html>
