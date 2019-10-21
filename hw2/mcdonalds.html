@@ -1,0 +1,275 @@
+
+<html>
+    <head>
+        <title>McDonald's Burgers Data Analysis</title>
+    </head>
+    <style>
+        html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
+        body {
+            font-size:20px;
+            background-image: url("bg.png");
+            background-color: #ffffff
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+    <body>
+        <h1>McDonald's Burger Data Analysis</h1>
+        <a href="for_ceo.pdf" download>Click Me to Download PDF Report</a>
+        <h2>How did the Impossible Burger influence us?</h2>
+
+        <!-- Let's see the chart here-->
+        <div id="monthlyLineChartCombine"></div>
+        <h4>
+            From the chart above, the good news is that our sale volume has been in an consistently increasing trend over the last three years. Good job folks! However, we observed an obvious drop compared to the general increase trend of our sales volume at <em>2018 October</em> , when Burger King Introduced their Impossible Burger. However, there still remains the question how wide was the influence? Was it for a specific kind of burger? Was it just for a specific region?</h4>
+        <div id="monthlyLineChartSeparate"></div>
+        <p></p>
+        <div id="monthlyLineChartRegion"></div>
+        <h4>
+            The two charts above show that the Impossible Burger negatively influence all of our products in every region. By <em>clicking the labels</em> on the legends, we can see that the major drop patterns at 2018 October are similar for different products or regions. This means that the market does have demands in veggie burgers and we really need to take actions in the field!
+            <em>Let's introduce the best Veggie Burger to revenge!</em>
+        </h4>
+
+        <h2>What else can we learn from the data?</h2>
+        <h3>When are people more likely to eat at McDonald's?</h3>
+
+        <div id="dailyLineChartWeekday"></div>
+        <h4>
+            In a week, people go to our restaurants more often on weekdays rather than weekends. To achieve a better performance, our marketing team should focus on some kinds of the weekends promotions to bring the families to McDonald's during the weekends or even the holidays. 
+        </h4>
+        <h3>How different are the tastes and consumption power of the consumers in different regions?</h3>
+        <div id="monthlyBarPivot"></div>
+        <h4>
+            Over last three years, the total sales volume at our five different regions are almost the same. And the proportions of different products are similar among these regions as well. These lead to the fact that the consumers over the nation have similar tastes and consumption power. Therefore, customizing business or marketing plans for different regions become less necessary. Focusing on one general plans should be helpful. 
+        </h4>
+
+        <!-- External imports begin -->
+        <script src = "https://code.highcharts.com/highcharts.js"></script>
+        <script src = "https://code.highcharts.com/modules/data.js"></script>
+        <!-- External imports end -->
+
+
+    </body>
+    <script>
+        Highcharts.chart('monthlyLineChartCombine', {
+
+            chart: {
+                scrollablePlotArea: {
+                    minWidth: 700
+                },
+                type: 'line',
+                backgroundColor:'rgba(0,0,0,0.1)'
+            },
+
+            data: {
+                csvURL: 'http://127.0.0.1:5500/monthly_no_loc_combine.csv'
+            },
+
+            title: {
+                text: 'Monthly Total Sales Volume over the Country'
+            },
+
+            subtitle: {
+                text: 'Source: McDonald\'s Data Engineering team'
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Sales Volume'
+                },
+                labels: {
+                    format: '{value} $USD'
+                }
+            },            
+            xAxis: {
+                title: {
+                    text: 'Month/ Year'
+                }
+            },
+            legend: {
+                enabled: false
+            }
+
+            });
+        Highcharts.chart('monthlyLineChartSeparate', {
+
+            chart: {
+                scrollablePlotArea: {
+                    minWidth: 700
+                },
+                type: 'line',
+                backgroundColor:'rgba(0,0,0,0.1)'
+            },
+
+            data: {
+                csvURL: 'http://127.0.0.1:5500/monthly_no_loc.csv'
+            },
+
+            title: {
+                text: 'Monthly Sales Volume of HM, CF and FF over the Country'
+            },
+
+            subtitle: {
+                text: 'Source: McDonald\'s Data Engineering team'
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Sales Volume'
+                },
+                labels: {
+                    format: '{value} $USD'
+                }
+            },            
+            xAxis: {
+                title: {
+                    text: 'Month/ Year'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                backgroundColor: '#FCFFC5'
+            },
+            
+        });
+        Highcharts.chart('monthlyLineChartRegion', {
+
+            chart: {
+                scrollablePlotArea: {
+                    minWidth: 700
+                },
+                type: 'line',
+                backgroundColor:'rgba(0,0,0,0.1)'
+            },
+
+            data: {
+                csvURL: 'http://127.0.0.1:5500/monthly_no_burger.csv'
+            },
+
+            title: {
+                text: 'Monthly Total Sales Volume over Diffrent Regions of the Country'
+            },
+
+            subtitle: {
+                text: 'Source: McDonald\'s Data Engineering team'
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Sales Volume'
+                },
+                labels: {
+                    format: '{value} $USD'
+                }
+            },            
+            xAxis: {
+                title: {
+                    text: 'Month/ Year'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                backgroundColor: '#FCFFC5'
+            },
+
+            });
+            Highcharts.chart('dailyLineChartWeekday', {
+
+                chart: {
+                    scrollablePlotArea: {
+                        minWidth: 700
+                    },
+                    type: 'line',
+                    backgroundColor:'rgba(0,0,0,0.1)'
+                },
+
+                data: {
+                    csvURL: 'http://127.0.0.1:5500/daily_by_weekday_total.csv'
+                },
+
+                title: {
+                    text: 'Average Daily Sale Volumes in 01/2016'
+                },
+
+                subtitle: {
+                    text: 'Source: McDonald\'s Data Engineering team'
+                },
+
+                yAxis: {
+                    title: {
+                        text: 'Sales Volume'
+                    },
+                    labels: {
+                        format: '{value} $USD'
+                    }
+                },            
+                xAxis: {
+                    title: {
+                        text: 'Day of the Week'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+
+                });
+
+            Highcharts.chart('monthlyBarPivot', {
+
+                chart: {
+                    scrollablePlotArea: {
+                        minWidth: 700
+                    },
+                    type: 'column',
+                    backgroundColor:'rgba(0,0,0,0.1)'
+                },
+                
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }
+                },
+
+                data: {
+                    csvURL: 'http://127.0.0.1:5500/monthly_pivot.csv'
+                },
+
+                title: {
+                    text: 'Total Sales Volume in Diffrent Regions over Last Three Years (01/2016 to 09/2019)'
+                },
+
+                subtitle: {
+                    text: 'Source: McDonald\'s Data Engineering team'
+                },
+
+                yAxis: {
+                    title: {
+                        text: 'Sales Volume'
+                    },
+                    labels: {
+                        format: '{value} $USD'
+                    }
+                },            
+                xAxis: {
+                    title: {
+                        text: 'Regions'
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    backgroundColor: '#FCFFC5'
+                },
+
+                });
+    </script>
+</html>
