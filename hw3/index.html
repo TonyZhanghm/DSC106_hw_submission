@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Internal stylesheet import -->
+    <!--link rel="stylesheet" href="main.css"-->
+    <!-- External Script -->
+    <script src = "assets/highcharts.js"></script>
+  </head>
+  <body>
+    <!-- Page Header Table -->
+    <table border="0" width = "90%" style="margin-left: 50px;" id='head'>
+      <tr>
+        <td width="5%"><img src="assets/left.png" alt="img"></td>
+        <td width="10%"><h2>Energy</h2></td>
+        <td><h2>Springfield</h2></td>
+      </tr>
+    </table>
+
+    <!-- Chart Placement Table -->
+    <table border="0", width="100%" id='main'>
+      <tr>
+        <td width="70%" rowspan="2" id="threeCharts"><table border="0", width = "100%">
+            <tr><td id='generationChart'></td></tr>
+            <tr><td>
+              <div id='priceChart'></div>
+              <div id='temperatureChart'></div>
+            </td></tr>
+        </table></td>
+        <td id="legendGrid" height=400>
+          <table id='legendTable' width="100%" border="0" rules="rows">
+            <tr>
+                <td width="40%"> </td>
+                <td width="20%"> </td>
+                <td width="20%"> </td>
+                <td width="20%"> </td>
+            </tr>
+            <th>
+              <td><h4>Power</h4>MW</td>
+              <td><h4>Contribution</h4>to demand</td>
+              <td><h4>Av.Value</h4>$/WMh</td>
+            </th>
+            <tr>
+              <td width="40%"><b>source</b></td>
+              <td width="20%"> </td>
+              <td width="20%"> </td>
+              <td width="20%"> </td>
+            </tr>
+            <tr>
+              <td><div style="width: 15px; height: 15px; background: #006400; display: inline-block;"></div> wind</td>
+              <td> </td>
+              <td> </td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td><div style="width: 15px; height: 15px; background: #4169E1; display: inline-block;"></div> hydro</td>
+              <td> </td>
+              <td> </td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td><div style="width: 15px; height: 15px; background: #FFA500; display: inline-block;"></div> gas(ccgt)</td>
+              <td> </td>
+              <td> </td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td><div style="width: 15px; height: 15px; background: #FF0000; display: inline-block;"></div> distillate</td>
+              <td> </td>
+              <td> </td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td><div style="width: 15px; height: 15px; background: #000000; display: inline-block;"></div> black coal</td>
+              <td> </td>
+              <td> </td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td><b>Loads</b></td>
+              <td> </td>
+              <td> </td>
+              <td> </td>
+            </tr>
+            <tr>
+              <td><div style="width: 15px; height: 15px; background: #9370DB; display: inline-block;"></div> exports</td>
+              <td> </td>
+              <td> </td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td><div style="width: 15px; height: 15px; background: #87CEFA; display: inline-block;"></div> pumps</td>
+              <td> </td>
+              <td> </td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td><b>Net</b></td>
+              <td> </td>
+              <td> </td>
+              <td> </td>
+            </tr>
+            <tr>
+              <td><b>Renewal</b></td>
+              <td> </td>
+              <td> </td>
+              <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type='image' src="assets/chart-bar-solid.svg" alt="submit" id="barBut" style="width:20px;"/>
+          <input type='image' src="assets/chart-pie-solid.svg" alt="submit" id="pieBut" style="width:20px;"/>
+          <div id="pieChart" name='pie'></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Internal JS Import -->
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="main.css">
+  </body>
+</html>

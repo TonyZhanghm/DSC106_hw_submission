@@ -1,0 +1,35 @@
+body {
+    background-color: #ece9e6;
+}
+
+#main {
+    font-family: "IBM Plex Serif",Georgia,"Times New Roman",Times,serif;
+    color: #333;
+}
+
+#head{
+    font-family: "Playfair Display",Georgia,"Times New Roman",Times,serif;
+    color: #333;
+}
+
+.simpleTable {
+    width: 90%;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    
+}
+
+#pieBut {
+    height:20px;
+    position: relative;
+    top:20px;
+    left: 250px;
+}
+
+#barBut {
+    height:20px;
+    position: relative;
+    top: 20px;
+    left: 250px;
+}
