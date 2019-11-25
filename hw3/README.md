@@ -1,0 +1,2 @@
+During the process, I found it really hard to sync the six different components since it needs to design the related functions carefully.
+Also, it was hard to follow the format/ style of the demo, like getting the css config. There are too many details to follow which makes it easy to lost. 

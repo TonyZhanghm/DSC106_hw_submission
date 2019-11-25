@@ -28,7 +28,13 @@ var generationConfig = {
         crosshair: true,
         formatter: function(){
             // console.log("in formatter", this.point)
-            updatePie(this.point.x)
+            var name = document.getElementById('pieChart').attributes['name'].value;
+            if (name == 'pie'){
+                plotPie(this.point.x)
+            }
+            else{
+                plotBar(this.point.x)
+            }
             updateLegend(this.point.x)
             return('<br/><span style="color:' + this.point.color + '">\u25A0</span> '+this.point.series.name+ ': '+Math.round(this.point.y)+' MW  Total: '+Math.round(this.point.total)+' MW')
         }
@@ -223,8 +229,54 @@ var pieConfig = {
             },
             shadow: false
         },
+        series:{
+            animation:{
+                duration: 0
+            }
+        }
     },
     series: []
+}
+
+var barConfig = {
+    chart: {
+        type: 'bar',
+        backgroundColor: "transparent",
+        height: 400,
+        width: 400,
+        animation: false,
+        align: "center"
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: ["Black Coal", "Distillate", "Gas (CCGT)", "Hydro", "Wind"],
+        title: {
+            text: null
+        }
+    },
+    yAxis: {
+        title:{
+            text: ''
+        }
+    },
+    tooltip: {
+        enabled: false,
+    },
+    plotOptions: {
+        bar: {
+            dataLabels: {
+                enabled: true
+            }
+        },
+        series:{
+            animation:{
+                duration: 0
+            }
+        }
+    },
+    series:[]
 }
 
 var colorDict = {'wind': '#006400', 'hydro': '#4169E1', 'pumps': '#87CEFA', 'gas_ccgt': '#FFA500', 'distillate':'#FF0000', 'black_coal': '#000000', 'exports': '#9370DB'}
@@ -267,9 +319,6 @@ function plotGeneration() {
     fetchJSONFile(JSONFileName, function(data){
 
         var effectiveDates = getDateArray(1571579700, 1572183000, 30)
-        // console.log(effectiveDates)
-        // deep clone in JS
-        // var jsonCfg = generationConfig;
         var seriesData = data.slice(0,7).map(function(elm) {
             var start = parseInt(elm['history']['start']);
             var last = parseInt(elm['history']['last']);
@@ -295,9 +344,6 @@ function plotGeneration() {
             obj['color'] = colorDict[obj['name']];
             return obj;
         });
-        // var xDate = new Array();
-        // effectiveDates.forEach((value) => xDate.push(dayNames[value.getDay()]+' '+value.getDate()+' '+(monthNames[value.getMonth()])));
-        // console.log("xaxis", xDate);
         generationConfig['series'] = seriesData;
         generationConfig['xAxis']['categories'] = effectiveDates;
         // console.log(generationConfig['series'])
@@ -343,9 +389,6 @@ function plotPie(x) {
     fetchJSONFile(JSONFileName, function(data){
 
         var effectiveDates = getDateArray(1571579700, 1572183000, 30)
-        // console.log(effectiveDates)
-        // deep clone in JS
-        // var jsonCfg = generationConfig;
         var seriesData = data.slice(0,7).map(function(elm) {
             var start = parseInt(elm['history']['start']);
             var last = parseInt(elm['history']['last']);
@@ -371,11 +414,6 @@ function plotPie(x) {
             obj['color'] = colorDict[obj['name']];
             return obj;
         });
-        // var xDate = new Array();
-        // effectiveDates.forEach((value) => xDate.push(dayNames[value.getDay()]+' '+value.getDate()+' '+(monthNames[value.getMonth()])));
-        // console.log("xaxis", xDate);
-        
-        // console.log(seriesData);
         var newSeriesData = [{}];
         var data = []; 
         var total_sum = 0;
@@ -403,73 +441,12 @@ function plotPie(x) {
         newSeriesData[0]['data'] = data;
         newSeriesData[0]['innerSize'] = "50%"
         pieConfig['series'] = newSeriesData;
+        pieConfig['title']['text'] = Math.round(positive)+" MW"
         Highcharts.chart('pieChart', pieConfig);
-        Highcharts.charts[3].setTitle({text: Math.round(positive)+" MW"});
+        // Highcharts.charts[3].setTitle({text: Math.round(positive)+" MW"});
     });
 
 
-}
-
-function updatePie(x) {
-    
-    fetchJSONFile(JSONFileName, function(data){
-
-        var effectiveDates = getDateArray(1571579700, 1572183000, 30)
-        var seriesData = data.slice(0,7).map(function(elm) {
-            var start = parseInt(elm['history']['start']);
-            var last = parseInt(elm['history']['last']);
-            var interval = parseInt(elm['history']['interval']);
-            // console.log((start-last)/interval/60)
-            var currentDates = getDateArray(start, last, interval);
-            // console.log(currentDates);
-            var allData = elm['history']['data']
-            var constant = 1
-            if (elm['fuel_tech'] == 'pumps' || elm['fuel_tech'] == 'exports'){
-                constant = -1;
-            }
-            var dateDataDict = {};
-            currentDates.forEach((value, i) => dateDataDict[value] = allData[i]);
-            var effectiveData = new Array();
-            for(var date of effectiveDates){
-                effectiveData.push(dateDataDict[date]*constant);
-            }
-            // console.log(effectiveData)
-            var obj = {};
-            obj['name'] = elm['fuel_tech'];
-            obj['data'] = effectiveData
-            obj['color'] = colorDict[obj['name']];
-            return obj;
-        });
-        var newSeriesData = [{}];
-        var data = []; 
-        var total_sum = 0;
-        var positive = 0;
-        var negative = 0;
-        for (var i = 0; i < 7; i++){
-            var obj = {}
-            if (seriesData[i]['name'] == 'pumps' || seriesData[i]['name'] == 'exports'){
-                continue;
-            }
-            obj['name'] = seriesData[i]['name'];
-            obj['color'] = colorDict[obj['name']];
-            obj['y'] = seriesData[i]['data'][x];
-            if (obj['name'] == 'pumps' || obj['name'] == 'exports'){
-                negative = negative + obj['y'];
-            }
-            else{
-                positive = positive + obj['y']
-            }
-            total_sum = total_sum + obj['y'];
-            data.push(obj)
-        }
-    
-        newSeriesData[0]['name'] = 'Energy';
-        newSeriesData[0]['data'] = data;
-        newSeriesData[0]['innerSize'] = "50%"
-        pieConfig['series'] = newSeriesData;
-        Highcharts.charts[3].setTitle({text: Math.round(positive)+' MW'});
-        Highcharts.charts[3].series[0].setData(data, true)
-    });
 }
 
 function updateLegend(x){
@@ -521,9 +498,6 @@ function updateLegend(x){
             data.push(obj)
         }
         var table = document.getElementById('legendTable');
-        // console.log(data);
-        // console.log(table);
-        // console.log(table.rows[2].cells[1])
     
         var monthNames = [
             "Jan", "Feb", "Mar",
@@ -564,6 +538,68 @@ function updateLegend(x){
 
 }
 
+function plotBar(x) {
+    
+    fetchJSONFile(JSONFileName, function(data){
+
+        var effectiveDates = getDateArray(1571579700, 1572183000, 30)
+        var seriesData = data.slice(0,7).map(function(elm) {
+            var start = parseInt(elm['history']['start']);
+            var last = parseInt(elm['history']['last']);
+            var interval = parseInt(elm['history']['interval']);
+            // console.log((start-last)/interval/60)
+            var currentDates = getDateArray(start, last, interval);
+            // console.log(currentDates);
+            var allData = elm['history']['data']
+            var constant = 1
+            if (elm['fuel_tech'] == 'pumps' || elm['fuel_tech'] == 'exports'){
+                constant = -1;
+            }
+            var dateDataDict = {};
+            currentDates.forEach((value, i) => dateDataDict[value] = allData[i]);
+            var effectiveData = new Array();
+            for(var date of effectiveDates){
+                effectiveData.push(dateDataDict[date]*constant);
+            }
+            // console.log(effectiveData)
+            var obj = {};
+            obj['name'] = elm['fuel_tech'];
+            obj['data'] = effectiveData
+            obj['color'] = colorDict[obj['name']];
+            return obj;
+        });
+
+        var newSeriesData = [{}];
+        var data = []; 
+        var total_sum = 0;
+        var positive = 0;
+        var negative = 0;
+        for (var i = 0; i < 7; i++){
+            var obj = {}
+            if (seriesData[i]['name'] == 'pumps' || seriesData[i]['name'] == 'exports'){
+                continue;
+            }
+            obj['name'] = seriesData[i]['name'];
+            obj['color'] = colorDict[obj['name']];
+            obj['y'] = seriesData[i]['data'][x];
+            if (obj['name'] == 'pumps' || obj['name'] == 'exports'){
+                negative = negative + obj['y'];
+            }
+            else{
+                positive = positive + obj['y']
+            }
+            total_sum = total_sum + obj['y'];
+            data.push(obj)
+        }
+        
+        newSeriesData[0]['data'] = data;
+        barConfig['series'] = newSeriesData;
+        // console.log(newSeriesData)
+        Highcharts.chart('pieChart', barConfig);
+    });
+
+}
+
 
 /**
  * In order to synchronize tooltips and crosshairs, override the
@@ -579,7 +615,7 @@ function updateLegend(x){
                     i,
                     event;
     
-                for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+                for (i = 0; i < 3; i = i + 1) {
                     chart = Highcharts.charts[i];
                     // Find coordinates within the chart
                     event = chart.pointer.normalize(e);
@@ -597,9 +633,25 @@ function updateLegend(x){
 })
 
 document.getElementById('pieBut').addEventListener('click', function(){
-    console.log("hello")
-    var name = document.getElementById('pieChart').attributes['name'].value();
+    // console.log("hello")
+    var name = document.getElementById('pieChart').attributes['name'].value;
     console.log(name)
+    if (name == 'pie'){
+        return
+    }
+    document.getElementById('pieChart').setAttribute('name', 'pie');
+    plotPie(0);
+})
+
+document.getElementById('barBut').addEventListener('click', function(){
+    // console.log("hello")
+    var name = document.getElementById('pieChart').attributes['name'].value;
+    console.log(name)
+    if (name == 'bar'){
+        return
+    }
+    document.getElementById('pieChart').setAttribute('name', 'bar');
+    plotBar(0);
 })
 
 /**
